@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTF, GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { defineComponent, render } from 'vue';
+import { defineComponent } from 'vue';
 import { h } from 'vue';
 function useGLTFLoader(path: any): Promise<GLTF> {
   const loader = new GLTFLoader();
@@ -27,7 +27,7 @@ type ISceneAnimation = {
 export function useSpacemanScene() {
   let scene = new THREE.Scene();
   let clock = new THREE.Clock();
-  let renderer = new THREE.WebGLRenderer({alpha: true});
+  let renderer = new THREE.WebGLRenderer({ alpha: true });
   const camera = new THREE.PerspectiveCamera(75, 600 / 600, 0.1, 1000);
   const controls = new OrbitControls(camera, renderer.domElement);
   const animations: ISceneAnimation = {};
@@ -42,8 +42,8 @@ export function useSpacemanScene() {
     },
   });
 
-  camera.position.set(2,2,2);
-  camera.lookAt(0,0,0);
+  camera.position.set(2, 2, 2);
+  camera.lookAt(0, 0, 0);
 
   function setSceneSize(x: number, y: number) {
     renderer.setSize(x, y);
@@ -52,8 +52,8 @@ export function useSpacemanScene() {
   function animationIdle(gltf: GLTF) {
     const mixer = new THREE.AnimationMixer(gltf.scene);
     let isActive = false;
-    gltf.scene.scale.set(1,1,1);
-    gltf.scene.rotation.set(0.3,0.3,0.3);
+    gltf.scene.scale.set(1, 1, 1);
+    gltf.scene.rotation.set(0.3, 0.3, 0.3);
     return gltf.animations
       .map((item) => ({
         [item.name]: {
@@ -78,8 +78,8 @@ export function useSpacemanScene() {
     scene.add(gltf.scene);
     animations[name] = animationIdle(gltf);
     return {
-        scene: gltf.scene,
-        animations: animations[name]
+      scene: gltf.scene,
+      animations: animations[name],
     };
   }
 
@@ -111,7 +111,7 @@ export function useSpacemanScene() {
       isRunning = false;
     };
   }
-  setSceneSize(600,600);
+  setSceneSize(600, 600);
   return {
     component,
     setSceneSize,

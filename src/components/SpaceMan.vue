@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSpacemanScene } from '../hooks/useSpacemanScene';
 import spaceman from '../assets/spaceman.glb';
-import { Object3DEventMap, Group, AnimationMixer, VectorKeyframeTrack, AnimationClip } from 'three';
+import { Object3DEventMap, Group } from 'three';
 const { addToScene, start, component: Scene } = useSpacemanScene();
 start();
 
