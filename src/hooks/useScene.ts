@@ -3,10 +3,6 @@ import { GLTF, GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { defineComponent, onUnmounted, reactive, UnwrapNestedRefs, watch } from 'vue';
 import { h } from 'vue';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 function useGLTFLoader(path: any): Promise<GLTF> {
   const loader = new GLTFLoader();
@@ -33,9 +29,9 @@ export function useScene(rect?: UnwrapNestedRefs<{ x: number; y: number }>) {
   if (!rect) {
     rect = reactive({ x: 600, y: 600 });
   }
-  let scene = new THREE.Scene();
-  let clock = new THREE.Clock();
-  let renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  const scene = new THREE.Scene();
+  const clock = new THREE.Clock();
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   const camera = new THREE.PerspectiveCamera(75, rect.x / rect.y, 0.1, 1000);
   const controls = new OrbitControls(camera, renderer.domElement);
   const light = new THREE.PointLight(0xff0040, 0.3, 3);
@@ -108,7 +104,7 @@ export function useScene(rect?: UnwrapNestedRefs<{ x: number; y: number }>) {
   }
 
   function animate() {
-    let delta = clock.getDelta();
+    const delta = clock.getDelta();
     for (const sceneKey in animations) {
       const scene = animations[sceneKey];
       for (const animationKey in scene) {
@@ -124,7 +120,7 @@ export function useScene(rect?: UnwrapNestedRefs<{ x: number; y: number }>) {
 
   function start() {
     let isRunning = true;
-    let runner = () => {
+    const runner = () => {
       if (isRunning) {
         animate();
         requestAnimationFrame(runner);

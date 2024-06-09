@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import './style.css';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import Main from './Main.vue';
+import Main from './MainComponent.vue';
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/aura-dark-cyan/theme.css';
 import {createPinia} from "pinia";

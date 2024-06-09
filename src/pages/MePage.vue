@@ -1,7 +1,7 @@
 <template>
   <div id="me">
-    <div class="me" :class="meClasses" ref="me">
-      <span class="me__name" v-for="letter in name">{{ letter }}</span>
+    <div ref="me" class="me" :class="meClasses">
+      <span v-for="letter in name" :key="letter" class="me__name">{{ letter }}</span>
     </div>
     <div class="info--container">
       <space-man class="spaceman" />
