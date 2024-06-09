@@ -1,8 +1,13 @@
 import * as THREE from 'three';
 import { GLTF, GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { defineComponent } from 'vue';
+import { defineComponent, onUnmounted, reactive, UnwrapNestedRefs, watch } from 'vue';
 import { h } from 'vue';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
 function useGLTFLoader(path: any): Promise<GLTF> {
   const loader = new GLTFLoader();
   const { resolve, promise } = Promise.withResolvers<GLTF>();
@@ -24,17 +29,21 @@ type ISceneAnimation = {
   };
 };
 
-export function useSpacemanScene() {
+export function useScene(rect?: UnwrapNestedRefs<{ x: number; y: number }>) {
+  if (!rect) {
+    rect = reactive({ x: 600, y: 600 });
+  }
   let scene = new THREE.Scene();
   let clock = new THREE.Clock();
-  let renderer = new THREE.WebGLRenderer({ alpha: true });
-  const camera = new THREE.PerspectiveCamera(75, 600 / 600, 0.1, 1000);
+  let renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  const camera = new THREE.PerspectiveCamera(75, rect.x / rect.y, 0.1, 1000);
   const controls = new OrbitControls(camera, renderer.domElement);
+  const light = new THREE.PointLight(0xff0040, 0.3, 3);
   const animations: ISceneAnimation = {};
   const component = defineComponent({
     mounted() {
-      renderer.domElement.style.setProperty('height', '600px');
-      renderer.domElement.style.setProperty('width', '600px');
+      renderer.domElement.style.setProperty('height', `${rect.x}px`);
+      renderer.domElement.style.setProperty('width', `${rect.y}px`);
       this.$el.appendChild(renderer.domElement);
     },
     render() {
@@ -44,6 +53,13 @@ export function useSpacemanScene() {
 
   camera.position.set(2, 2, 2);
   camera.lookAt(0, 0, 0);
+  light.position.set(0, 1, 0);
+  light.lookAt(0, 0, 0);
+  camera.add(light);
+
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.6;
+  controls.enablePan = false;
 
   function setSceneSize(x: number, y: number) {
     renderer.setSize(x, y);
@@ -73,9 +89,17 @@ export function useSpacemanScene() {
       }))
       .reduce((agg, prev) => ({ ...agg, ...prev }), {});
   }
-  async function addToScene(name: string, GLTF: any) {
+  async function addToScene(
+    name: string,
+    GLTF: any,
+    perform?: (scene: THREE.Scene, camera: THREE.Camera, gltf: GLTF) => Promise<void>
+  ) {
     const gltf = await useGLTFLoader(GLTF);
-    scene.add(gltf.scene);
+    if (perform) {
+      await perform(scene, camera, gltf);
+    } else {
+      scene.add(gltf.scene);
+    }
     animations[name] = animationIdle(gltf);
     return {
       scene: gltf.scene,
@@ -112,6 +136,16 @@ export function useSpacemanScene() {
     };
   }
   setSceneSize(600, 600);
+  renderer.render(scene, camera);
+
+  const stopHandler = watch(rect, ({ x, y }) => {
+    renderer.setSize(x, y);
+  });
+
+  onUnmounted(() => {
+    stopHandler();
+  });
+
   return {
     component,
     setSceneSize,

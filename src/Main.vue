@@ -1,9 +1,11 @@
 <template>
-  <main>
+  <main :class="mainClasses">
     <header :class="headerClasses">
-      <span> Павел Кононов </span>
+      <span> Pavel Kononov </span>
     </header>
-    <RouterView />
+    <div class="main">
+      <RouterView />
+    </div>
   </main>
 </template>
 
@@ -14,14 +16,40 @@ import { computed } from 'vue';
 const store = useMainPageStore();
 
 const headerClasses = computed(() => (store.isHeaderInactive ? ['header-visible'] : ['header-hidden']));
+const mainClasses = computed(() => (store.isHeaderInactive ? ['background'] : []));
 </script>
+
 <style scoped>
 main {
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 1280px;
   margin: 0 auto;
+  &::before {
+    position: absolute;
+    content: '';
+    background: url('assets/surface.svg') fixed;
+    width: 100%;
+    height: 100%;
+    filter: brightness(0%);
+  }
+  &.background::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    filter: brightness(30%);
+    background: url('assets/surface.svg') fixed;
+    background-position: fixed;
+    background-size: 100%;
+    background-repeat: space;
+    transition: filter 1.2s ease-out;
+  }
+  .main {
+    height: 100%;
+    width: 1280px;
+    margin: 0 auto;
+  }
 }
 
 header {

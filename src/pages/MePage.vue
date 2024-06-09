@@ -3,7 +3,10 @@
     <div class="me" :class="meClasses" ref="me">
       <span class="me__name" v-for="letter in name">{{ letter }}</span>
     </div>
-    <space-man />
+    <div class="info--container">
+      <space-man class="spaceman" />
+      <my-info class="info"></my-info>
+    </div>
   </div>
 </template>
 
@@ -12,16 +15,15 @@ import animation from 'animejs';
 import { onMounted, reactive, ref } from 'vue';
 import { useTrain } from '../hooks/useTrain';
 import useMainPageStore from '../stores/mainPage';
-import SpaceMan from '../components/SpaceMan.vue';
-const name = 'Павел Кононов';
+const name = 'Pavel Kononov';
 const me = ref<HTMLDivElement>();
 const meClasses = reactive<string[]>([]);
-const { runAsThenable } = useTrain();
+const { runNormal } = useTrain();
 
 const mainPageStore = useMainPageStore();
 
 onMounted(() => {
-  runAsThenable(animateName, animeHeader);
+  runNormal(animateName, animeHeader);
 });
 function animateName() {
   const { resolve, promise } = Promise.withResolvers();
@@ -29,7 +31,7 @@ function animateName() {
     targets: '.me .me__name',
     translateY: [100, 0],
     easing: 'easeOutExpo',
-    duration: 1400,
+    duration: 1000,
     delay: animation.stagger(100),
   });
   const { top } = me.value!.getBoundingClientRect();
@@ -67,6 +69,7 @@ async function animeHeader() {
 .me {
   position: absolute;
   text-align: center;
+  z-index: 5;
   overflow: hidden;
   font-size: 4em;
   white-space: break-spaces;
@@ -81,5 +84,17 @@ async function animeHeader() {
 
 .me__name {
   display: inline-block;
+}
+
+.info--container {
+  min-height: 600px;
+  position: relative;
+  .spaceman {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
 }
 </style>

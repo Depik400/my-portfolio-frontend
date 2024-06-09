@@ -1,9 +1,17 @@
+@font-face {
+  font-family: 'Izhora';
+  src: url('assets/ST-Izhora-free.otf');
+}
+
 #app {
   height: 100vh;
   text-align: center;
+  font-family: 'Izhora', sans-serif;
+  font-weight: 300;
+  font-style: normal;
 }
 
 body {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
