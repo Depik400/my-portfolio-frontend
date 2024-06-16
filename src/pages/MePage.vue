@@ -39,7 +39,7 @@ function animateName() {
     });
     const { top, height } = me.value!.getBoundingClientRect();
     console.log(top, height);
-    const translate = window.innerWidth > 360 ? -top - 18 : -top - 10;
+    const translate = window.innerWidth > 468 ? -top - 18 : -top - 10;
     timeline.add({
         targets: '.me',
         translateY: translate,
@@ -77,7 +77,7 @@ async function animeHeader() {
     z-index: 5;
     overflow: hidden;
     font-size: 4em;
-    @media (max-width: 360px) {
+    @media (max-width: 468px) {
         font-size: 3em;
     }
     white-space: break-spaces;
