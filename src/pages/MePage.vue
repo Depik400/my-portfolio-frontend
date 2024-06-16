@@ -1,9 +1,7 @@
 <template>
     <div id="me">
         <div ref="me" class="me" :class="meClasses">
-            <span class="me--container">
-                <span v-for="letter in name" :key="letter" class="me__name">{{ letter }}</span>
-            </span>
+            <span v-for="letter in name" :key="letter" class="me__name">{{ letter }}</span>
         </div>
         <div class="info--container">
             <space-man class="spaceman" />
@@ -72,9 +70,6 @@ async function animeHeader() {
     justify-content: center;
 }
 
-.me--container {
-    white-space: nowrap;
-}
 .me {
     position: absolute;
     text-align: center;
