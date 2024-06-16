@@ -1,5 +1,5 @@
-import {defineStore} from "pinia";
-import {ref} from "vue";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 export default defineStore('mainPage', () => {
     const isHeaderInactive = ref(false);
@@ -8,8 +8,11 @@ export default defineStore('mainPage', () => {
         isHeaderInactive.value = true;
     }
 
+    const inLoading = ref(false);
+
     return {
-         activateHeader,
-         isHeaderInactive,
-    }
-})
+        activateHeader,
+        inLoading,
+        isHeaderInactive,
+    };
+});
