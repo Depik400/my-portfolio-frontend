@@ -37,11 +37,12 @@ function animateName() {
         duration: 1000,
         delay: animation.stagger(100),
     });
-    const { top } = me.value!.getBoundingClientRect();
+    const { top, height } = me.value!.getBoundingClientRect();
+    console.log(top, height);
+    const translate = window.innerWidth > 360 ? -top - 18 : -top - 10;
     timeline.add({
         targets: '.me',
-
-        translateY: -top - 48 / 2 + 4,
+        translateY: translate,
         easing: 'easeOutExpo',
         duration: 1400,
         begin: () => {
@@ -76,6 +77,9 @@ async function animeHeader() {
     z-index: 5;
     overflow: hidden;
     font-size: 4em;
+    @media (max-width: 360px) {
+        font-size: 3em;
+    }
     white-space: break-spaces;
     transition: font-size 1s ease-out;
     &.me_minify {
