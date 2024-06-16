@@ -4,13 +4,13 @@
             <span>Заинтересованы в сотрудничестве? Напишите мне:</span>
             <div class="info--links">
                 <a class="info--link" href="https://vk.com/depik400" target="blank">
-                    <img :src="VKImage" />
+                    <img :src="VKImage" alt="image" />
                 </a>
                 <a class="info--link" href="https://t.me/+79992237363" target="blank">
-                    <img :src="TelegramImage" />
+                    <img :src="TelegramImage" alt="image" />
                 </a>
                 <a class="info--link" href="mailto:depik400@yandex.ru">
-                    <img :src="MailImage" />
+                    <img :src="MailImage" alt="image" />
                 </a>
             </div>
         </div>
